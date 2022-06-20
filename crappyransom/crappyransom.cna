@@ -1,0 +1,31 @@
+#Register command
+beacon_command_register(
+    "crappyransom",
+    "Ransomware emulation BOF, uses caesar cipher on a file with a provided int value so shouldn't be too risky",
+    "crappyransom [inputfile] [outputfile] [caesarvalue]"
+);
+
+alias crappyransom {
+    local('$barch $handle $data $args');
+    println(@_);
+    
+    # figure out the arch of this session
+    $barch  = barch($1);
+    
+    # read BOF file
+    $handle = openf(script_resource("crappyransom.o"));
+    $data = readb($handle, -1);
+    closef($handle);
+    
+    if(size(@_) == 4)
+    {
+        $args = bof_pack($1, "zzi", $2, $3, $4);
+    } else {
+        berror($1, "Incorrect usage");
+        berror($1, beacon_command_detail("crappyransom"));
+        return;
+    }
+    
+    btask($1, "Executing crappyransom by jordanjoewatson");
+    beacon_inline_execute($1, $data, "go", $args);
+}
