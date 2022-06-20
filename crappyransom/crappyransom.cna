@@ -13,7 +13,7 @@ alias crappyransom {
     $barch  = barch($1);
     
     # read BOF file
-    $handle = openf(script_resource("crappyransom.o"));
+    $handle = openf(script_resource("crappyransom. $+ $barch $+ .o"));
     $data = readb($handle, -1);
     closef($handle);
     
