@@ -97,20 +97,21 @@ void go(char* args, int len)
 	char *buffer;	
 	buffer = (char *) MSVCRT$malloc(fileSize * sizeof(char));
 	KERNEL32$ReadFile(fileHandle, buffer, fileSize, NULL, NULL);
-
+	_fclose(fileHandle);
+	
 	for (int i = 0; i < fileSize; i++) {
 		buffer[i] = (buffer[i] + ciphern)%256;
 	}
 
-  HANDLE *outptr;
+  	HANDLE *outptr;
 	LPCSTR filenameout = TEXT(output_file); 
-  outptr = _fopen(filenameout,"w");
+  	outptr = _fopen(filenameout,"w");
 
-  if(outptr == NULL)
-  {
-    BeaconPrintf(CALLBACK_OUTPUT, "Unable to open handle to %s\n\r", output_file);  
-    return;
-  }
+  	if(outptr == NULL)
+  	{
+    		BeaconPrintf(CALLBACK_OUTPUT, "Unable to open handle to %s\n\r", output_file);  
+    		return;
+  	}
 	else 
 	{
 		BeaconPrintf(CALLBACK_OUTPUT, "%s handle opened\n\r", output_file);
@@ -118,7 +119,7 @@ void go(char* args, int len)
        
 	BeaconPrintf(CALLBACK_OUTPUT, "Writing encrypted data\n\r", output_file);	
 	_fwrite(buffer, MSVCRT$strlen(buffer), NULL, outptr);
-  _fclose(outptr);
+  	_fclose(outptr);
 
 	return;
 }
