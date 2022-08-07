@@ -6,7 +6,7 @@ Two commands available `install` and `uninstall`.
 
 ## install
 
-`uacbypassfodhelper install "powershell.exe -c calc.exe`
+`uacbypassfodhelper install "powershell.exe -c calc.exe"`
 
 `fodhelper` needs to be started manually, this BOF just adds the registry keys required for the bypass
 
